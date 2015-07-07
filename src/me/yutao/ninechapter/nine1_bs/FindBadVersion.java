@@ -10,33 +10,41 @@ package me.yutao.ninechapter.nine1_bs;
  */
 public class FindBadVersion {
     public static void main(String[] args) {
-        int[] nums = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
         FindBadVersion find = new FindBadVersion();
-        System.out.println(find.findBadVersion(nums));
+        System.out.println(find.findBadVersion(10));
     }
 
-    public int findBadVersion(int[] nums) {
-        if (nums == null || nums.length == 0) {
+    public int findBadVersion(int n) {
+        if (n < 2) {
+            if (n == 1 && isBadVersion(1)) {
+                return 1;
+            }
             return -1;
         }
 
-        int start = 0;
-        int end = nums.length - 1;
+        if (isBadVersion(1)) {
+            return 1;
+        }
+
+        int start = 2;
+        int end = n;
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
 
-            if (isBadVersion(nums[mid])) {
+            if (!isBadVersion(mid - 1) && isBadVersion(mid)) {
+                return mid;
+            } else if (isBadVersion(mid)) {
                 end = mid;
             } else {
                 start = mid;
             }
         }
 
-        if (isBadVersion(nums[start])) {
+        if (!isBadVersion(start - 1) && isBadVersion(start)) {
             return start;
         }
 
-        if (isBadVersion(nums[end])) {
+        if (!isBadVersion(end - 1) && isBadVersion(end)) {
             return end;
         }
 
